@@ -15,7 +15,7 @@ fun BoardGrid() {
     Canvas(modifier = Modifier.fillMaxSize()) {
         val separatedLine: (start: Offset, end: Offset) -> Unit = { start, end ->
             drawLine(
-                Color.Black,
+                Color.LightGray,
                 strokeWidth = 4f,
                 start = start,
                 end = end

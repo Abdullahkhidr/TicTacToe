@@ -2,7 +2,7 @@ package x.bod.game.tictactoe.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val primaryColor = Color(0xFF282B38)
+val primaryColor = Color(0xFFF3B95E)
 
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
