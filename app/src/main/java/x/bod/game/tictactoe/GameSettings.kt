@@ -1,10 +1,6 @@
 package x.bod.game.tictactoe
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 
 object GameSettings {
     val board = mutableStateListOf(
@@ -24,14 +20,18 @@ object GameSettings {
         }
     }
 
-    private fun winner(array: Array<Player>): Player {
-        array.all { it == array.first() }.apply {
-            return if (this) {
-                if (array.first() == Player.X) StatusGame.numWinPlayerX++
-                else if (array.first() == Player.O) StatusGame.numWinPlayerO++
-                array.first()
-            } else Player.NONE
+    private fun winner(array: Array<Player>, lineWin: LineWin): Boolean {
+        board.forEach {
+            if (it.contains(Player.NONE)) return false
+
+            if (array.first() == Player.X) StatusGame.numWinPlayerX++
+            else if (array.first() == Player.O) StatusGame.numWinPlayerO++
+
+            StatusGame.winner = array.first()
+            StatusGame.lineWin = lineWin
+            return true
         }
+        return false
     }
 
     fun reset() {
@@ -51,35 +51,28 @@ object GameSettings {
     }
 
     private fun checkStatus() {
-        for (i in board.indices) {
-            StatusGame.winner = winner(board[i].toTypedArray())
-            if (StatusGame.winner != Player.NONE) {
-                StatusGame.lineWin = LineWin.valueOf("HORIZONTAL_${i + 1}")
-                return
+        for (i in board.indices)
+            winner(board[i].toTypedArray(), LineWin.valueOf("HORIZONTAL_${i + 1}")).apply {
+                if (this) return
             }
-        }
-        for (i in board.indices) {
-            StatusGame.winner = winner(Array(board.size) { board[it][i] })
-            if (StatusGame.winner != Player.NONE) {
-                StatusGame.lineWin = LineWin.valueOf("VERTICAL_${i + 1}")
-                return
-            }
-        }
-        StatusGame.winner = winner(Array(board.size) { board[it][it] })
-        if (StatusGame.winner != Player.NONE) {
-            StatusGame.lineWin = LineWin.valueOf("DIAGONAL_1")
-            return
-        }
-
-        StatusGame.winner = winner(Array(board.size) { board[it][board.size - it - 1] })
-        if (StatusGame.winner != Player.NONE) {
-            StatusGame.lineWin = LineWin.valueOf("DIAGONAL_2")
-            return
-        }
 
         for (i in board.indices)
-            for (j in board[i].indices)
-                if (board[i][j] == Player.NONE) return
+            winner(Array(board.size) { board[it][i] }, LineWin.valueOf("VERTICAL_${i + 1}")).apply {
+                if (this) return
+            }
+
+        winner(Array(board.size) { board[it][it] }, LineWin.valueOf("DIAGONAL_1")).apply {
+            if (this) return
+        }
+
+        winner(
+            Array(board.size) { board[it][board.size - it - 1] },
+            LineWin.valueOf("DIAGONAL_2")
+        ).apply {
+            if (this) return
+        }
+
+        board.forEach { if (it.contains(Player.NONE)) return }
 
         StatusGame.numTie++
         StatusGame.winner = Player.DRAW
