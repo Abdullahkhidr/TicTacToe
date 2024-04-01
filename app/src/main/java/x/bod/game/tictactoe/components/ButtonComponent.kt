@@ -12,12 +12,17 @@ import x.bod.game.tictactoe.Player
 import x.bod.game.tictactoe.StatusGame
 
 @Composable
-fun ButtonComponent(title: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun ButtonComponent(
+    title: String,
+    secondary: Boolean = false,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     FilledTonalButton(
         onClick = onClick,
         modifier = modifier
-            .padding(vertical = 10.dp)
-            .alpha(if (StatusGame.winner == Player.NONE) 0f else 1f)
+            .padding(vertical = 10.dp, horizontal = 5.dp)
+
     ) {
         Text(text = title)
     }

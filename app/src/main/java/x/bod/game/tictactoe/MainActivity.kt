@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -54,12 +55,19 @@ fun GameScreen() {
                 ScoreComponent()
                 Board()
             }
-
-            ButtonComponent(
-                title = "Play Again", modifier = Modifier
-                    .alpha(if (StatusGame.winner == Player.NONE) 0f else 1f)
-            ) {
-                if (StatusGame.winner != Player.NONE) GameSettings.reset()
+            Row(modifier = Modifier.alpha(if (StatusGame.winner == Player.NONE) 0f else 1f)) {
+                ButtonComponent(
+                    title = "Play Again", modifier = Modifier
+                        .weight(1f)
+                ) {
+                    if (StatusGame.winner != Player.NONE) GameSettings.clear()
+                }
+                ButtonComponent(
+                    title = "Reset", modifier = Modifier
+                        .weight(1f)
+                ) {
+                    if (StatusGame.winner != Player.NONE) GameSettings.reset()
+                }
             }
             Spacer(modifier = Modifier.weight(1f))
         }

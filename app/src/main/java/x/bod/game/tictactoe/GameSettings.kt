@@ -1,6 +1,10 @@
 package x.bod.game.tictactoe
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 
 object GameSettings {
     val board = mutableStateListOf(
@@ -31,6 +35,14 @@ object GameSettings {
     }
 
     fun reset() {
+        clear()
+        StatusGame.currentPlayer = Player.X
+        StatusGame.numWinPlayerX = 0
+        StatusGame.numWinPlayerO = 0
+        StatusGame.numTie = 0
+    }
+
+    fun clear() {
         for (i in board.indices)
             for (j in board[i].indices)
                 board[i][j] = Player.NONE
