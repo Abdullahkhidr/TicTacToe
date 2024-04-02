@@ -9,29 +9,36 @@ object GameSettings {
         mutableStateListOf(Player.NONE, Player.NONE, Player.NONE)
     )
 
-    fun play(row: Int, col: Int) {
-        if (StatusGame.winner == Player.NONE && row >= 0 && row < board.size && col >= 0 && col < board[0].size && board[row][col] == Player.NONE) {
-            board[row][col] = StatusGame.currentPlayer
-            StatusGame.currentPlayer = when (StatusGame.currentPlayer) {
-                Player.X -> Player.O
-                else -> Player.X
-            }
-            checkStatus()
+    private fun switchPlayer() {
+        StatusGame.currentPlayer = when (StatusGame.currentPlayer) {
+            Player.X -> Player.O
+            else -> Player.X
         }
     }
 
-    private fun winner(array: Array<Player>, lineWin: LineWin): Boolean {
-        board.forEach {
-            if (it.contains(Player.NONE)) return false
-
-            if (array.first() == Player.X) StatusGame.numWinPlayerX++
-            else if (array.first() == Player.O) StatusGame.numWinPlayerO++
-
-            StatusGame.winner = array.first()
-            StatusGame.lineWin = lineWin
+    fun play(row: Int, col: Int): Boolean {
+        if (StatusGame.winner == Player.NONE && row >= 0 && row < board.size && col >= 0 && col < board[0].size && board[row][col] == Player.NONE) {
+            board[row][col] = StatusGame.currentPlayer
+            checkStatus()
+            switchPlayer()
             return true
         }
         return false
+    }
+
+    private fun winner(array: Array<Player>, lineWin: LineWin): Boolean {
+        array.all { it == array.first() }.apply {
+            return if (this) {
+                if (array.first() == Player.X) StatusGame.numWinPlayerX++
+                else if (array.first() == Player.O) StatusGame.numWinPlayerO++
+                if (array.first() != Player.NONE) {
+                    StatusGame.winner = array.first()
+                    StatusGame.lineWin = lineWin
+                    return true
+                }
+                return false
+            } else false
+        }
     }
 
     fun reset() {
