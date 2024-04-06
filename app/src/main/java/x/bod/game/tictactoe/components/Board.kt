@@ -16,7 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import x.bod.game.tictactoe.GameSettings
+import x.bod.game.tictactoe.NumberOfPlayers
 import x.bod.game.tictactoe.Player
+import x.bod.game.tictactoe.StatusGame
+import x.bod.game.tictactoe.play
 
 @Preview
 @Composable
@@ -42,9 +45,10 @@ fun Board() {
                                     .weight(1f)
                                     .fillMaxHeight()
                                     .clickable {
-                                        GameSettings.play(i, j)
-//                                        if (GameSettings.play(i, j))
-//                                            GameSettings.play()
+                                        if (GameSettings.play(i, j)
+                                            && StatusGame.numberOfPlayers == NumberOfPlayers._1P
+                                        )
+                                            GameSettings.play()
                                     },
                                 contentAlignment = Alignment.Center
                             ) {

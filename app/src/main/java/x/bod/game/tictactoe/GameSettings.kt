@@ -41,6 +41,13 @@ object GameSettings {
         }
     }
 
+    fun changeNumberOfPlayer(numberOfPlayers: NumberOfPlayers) {
+        if (StatusGame.numberOfPlayers != numberOfPlayers) {
+            reset()
+            StatusGame.numberOfPlayers = numberOfPlayers
+        }
+    }
+
     fun reset() {
         clear()
         StatusGame.currentPlayer = Player.X

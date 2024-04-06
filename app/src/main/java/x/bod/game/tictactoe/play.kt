@@ -77,6 +77,7 @@ fun GameSettings.play() {
         return
     }
 
+    /**Select Random Position from available Positions*/
     val availablePos = hashMapOf<Int, Int>()
     for (i in board.indices)
         for (j in board[i].indices)

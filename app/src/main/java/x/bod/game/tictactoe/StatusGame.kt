@@ -12,5 +12,9 @@ object StatusGame {
     var numWinPlayerX by mutableIntStateOf(0)
     var numWinPlayerO by mutableIntStateOf(0)
     var numTie by mutableIntStateOf(0)
+    var numberOfPlayers by mutableStateOf(NumberOfPlayers._2P)
+}
 
+enum class NumberOfPlayers {
+    _1P, _2P
 }
